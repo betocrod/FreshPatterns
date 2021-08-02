@@ -8,8 +8,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.betocrod.freshpatterns.ui.theme.MyApplicationTheme
 
+const val HOME_SCREEN = "HOME_SCREEN"
+
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onCreationalButtonClicked: () -> Unit,
+    onStructuralButtonClicked: () -> Unit,
+    onBehaviouralButtonClicked: () -> Unit,
+    onConcurrencyButtonClicked: () -> Unit) {
     Scaffold(
         topBar = { HomeAppBar() }
     ) {
@@ -17,7 +23,13 @@ fun HomeScreen() {
             .fillMaxHeight()
             .fillMaxWidth()
             .padding(1.dp)
-        HomeContent(modifier)
+        HomeContent(
+            onCreationalButtonClicked,
+            onStructuralButtonClicked,
+            onBehaviouralButtonClicked,
+            onConcurrencyButtonClicked,
+            modifier
+        )
     }
 }
 
@@ -27,18 +39,39 @@ private fun HomeAppBar() {
 }
 
 @Composable
-private fun HomeContent(modifier: Modifier = Modifier) {
+private fun HomeContent(
+    onCreationalButtonClicked: () -> Unit,
+    onStructuralButtonClicked: () -> Unit,
+    onBehaviouralButtonClicked: () -> Unit,
+    onConcurrencyButtonClicked: () -> Unit,
+    modifier: Modifier = Modifier) {
     Column(modifier) {
         Row(modifier = Modifier.weight(0.5f)) {
-            HomeButton("Creational", modifier.weight(0.5f))
+            HomeButton(
+                homeOption = HomeOption.CreationalHomeScreen,
+                onClickListener = { onCreationalButtonClicked() },
+                modifier = modifier.weight(0.5f)
+            )
             VerticalDivider()
-            HomeButton("Structural", modifier.weight(0.5f))
+            HomeButton(
+                homeOption = HomeOption.StructuralHomeScreen,
+                onClickListener = { onStructuralButtonClicked() },
+                modifier = modifier.weight(0.5f)
+            )
         }
         Divider()
         Row(modifier = Modifier.weight(0.5f)) {
-            HomeButton("Behavioural", modifier.weight(0.5f))
+            HomeButton(
+                homeOption = HomeOption.BehaviouralHomeScreen,
+                onClickListener = { onBehaviouralButtonClicked() },
+                modifier = modifier.weight(0.5f)
+            )
             VerticalDivider()
-            HomeButton("Concurrency", modifier.weight(0.5f))
+            HomeButton(
+                homeOption = HomeOption.ConcurrencyHomeScreen,
+                onClickListener = { onConcurrencyButtonClicked() },
+                modifier = modifier.weight(0.5f)
+            )
         }
     }
 }
@@ -54,14 +87,15 @@ private fun VerticalDivider() {
 
 @Composable
 private fun HomeButton(
-    text: String,
+    homeOption: HomeOption,
+    onClickListener: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = { onClickListener() },
         modifier = modifier
     ) {
-        Text(text = text)
+        Text(text = homeOption.title)
     }
 }
 
@@ -69,6 +103,6 @@ private fun HomeButton(
 @Composable
 fun HomeScreenPreview() {
     MyApplicationTheme {
-        HomeScreen()
+            // TODO
     }
 }
